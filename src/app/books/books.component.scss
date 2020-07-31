@@ -1,0 +1,164 @@
+@import "~@angular/material/theming";
+
+$my-primary: #558b2f;
+$my-accent: #ffb74d;
+$my-warn: #ff5722;
+
+label {
+  display: inline-block;
+  color: $my-primary;
+  font-weight: bold;
+}
+.mat-form-field {
+  font-size: 20px;
+  font-weight: 600;
+  width: 100%;
+}
+
+button:not(.mat-fab) {
+  margin-top: 20px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+button:disabled {
+  background-color: #b2dfdb;
+  color: #ccc;
+  cursor: auto;
+}
+table {
+  width: 100%;
+  background-color: #efe7db;
+  padding: 5px;
+}
+thead,
+tbody {
+  display: block;
+}
+
+tbody {
+  margin-top: 1vh;
+  height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @media (max-width: 400px) {
+    overflow-x: auto;
+    font-size: 13px;
+  }
+  @media (min-width: 400px) {
+    tr {
+      height: 3.5vh;
+    }
+  }
+}
+tr {
+  border-bottom: dotted 2px #f1f8e9;
+}
+td,
+th {
+  width: 15%;
+  @media (max-width: 800px) {
+    margin-left: 3vw;
+  }
+  :hover {
+    cursor: pointer;
+  }
+}
+th {
+  text-align: left;
+  height: 5vh;
+  color: $my-primary;
+  margin-top: 1vh;
+ 
+ 
+  @media (min-width: 600px) and (max-width: 1000px) {
+    font-size: 11px;
+  }
+  @media (max-width: 1000px) {
+    font-size: 14px;
+  }
+}
+.numberOfPages,
+.genre,
+.index {
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+.books {
+  display: flex;
+  justify-content: flex-start;
+  :nth-child(2) {
+    width: 60%;
+    font-weight: 600;
+  }
+  :first-child {
+    width: 5%;
+  }
+  :hover {
+    cursor: pointer;
+  }
+}
+
+.mat-divider {
+  margin: 2vh 0;
+}
+.mat-raised-button {
+  width: 30vw;
+  font-size: 1.2em;
+  border-radius: 12px;
+}
+.mat-fab {
+  .mat-icon {
+    margin: 0;
+  }
+  margin: 3vh;
+  margin-right: auto;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+.selected {
+  color: $my-accent;
+  margin: 2vh 0;
+  font-weight: bold;
+  font-size: larger;
+}
+.description {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .descriptionBook {
+    font-size: 18px;
+    div {
+      margin-top: 1vh;
+      font-weight: bold;
+    }
+  }
+  .buttonsEnd {
+    margin: 11vh 0 3vh 0;
+  }
+}
+span {
+  color: $my-primary;
+  font-weight: bold;
+  margin-right: 7px;
+}
+h2 {
+  font-weight: 600;
+}
+.search {
+  .mat-icon {
+    color: $my-primary;
+    font-size: 26px !important;
+    font-weight: 700;
+    margin-left: 5vh;
+    margin-right: 2vh;
+  }
+  .mat-label {
+    padding-bottom: 2vh;
+  }
+}

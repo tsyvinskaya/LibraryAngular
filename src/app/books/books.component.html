@@ -1,0 +1,157 @@
+<div class="container">
+
+  <mat-form-field class="search" color="primary" style="margin-top: 2vh;">
+    <mat-label>
+      <mat-icon aria-hidden="false" aria-label="search">search</mat-icon>Поиск
+    </mat-label>
+    <input matInput placeholder="найти книгу по названию, жанру или кол-ву страниц" type="text" name="search"
+      [(ngModel)]="searchText" autocomplete="off" />
+  </mat-form-field>
+
+  <table matSort (matSortChange)="sortData($event)">
+    <thead>
+      <tr class="books">
+        <th class="index">№</th>
+        <th mat-sort-header="name">Название</th>
+        <th class="authorLastName" mat-sort-header="authorLastName">Автор</th>
+        <th class="genre" mat-sort-header="genre">Жанр</th>
+        <th class="numberOfPages" mat-sort-header="numberOfPages">
+          Кол-во страниц
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="books" *ngFor="let book of books | filter: searchText; let i = index"
+        [class.selected]="book === selectedBook" (click)="openDialog(description)" (click)="onSelect(book)">
+        <td class="index">{{ i + 1 }}</td>
+        <td class="bookName">{{ book.name }}</td>
+        <td class="authorLastName">{{ book.authorLastName }}</td>
+        <td class="genre">{{ book.genre }}</td>
+        <td class="numberOfPages">{{ book.numberOfPages }}</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <mat-divider></mat-divider>
+
+  <div class="buttonContainer">
+    <button mat-raised-button color="primary" (click)="openDialog(addNewBook)">
+      Добавить книгу
+    </button>
+  </div>
+
+  <ng-template #addNewBook>
+    <mat-dialog-content>
+      <form [formGroup]="myForm" novalidate (ngSubmit)="submit()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Название книги</mat-label>
+          <input matInput name="bookName" formControlName="bookName" placeholder="Название книги" type="text" />
+          <mat-error *ngIf="myForm.controls['bookName'].hasError('required')">
+            Введите, пожалуйста, название книги
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Автор</mat-label>
+          <mat-select name="authorLastName" formControlName="authorLastName">
+            <mat-option *ngFor="let author of authors" [value]="author.lastName">
+              {{ author.lastName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="myForm.controls['authorLastName'].hasError('required')">
+            Введите, пожалуйста, фамилию автора
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Жанр</mat-label>
+          <mat-select name="genre" formControlName="genre">
+            <mat-option *ngFor="let genre of genres" [value]="genre">
+              {{ genre }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="myForm.controls['genre'].hasError('required')">
+            Выберите, пожалуйста, жанр книги
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Количество страниц</mat-label>
+          <input matInput name="pages" formControlName="pages" placeholder="Количество страниц" type="number" />
+          <mat-error *ngIf="
+              myForm.controls['pages'].hasError('max') &&
+              !myForm.controls['pages'].hasError('required')
+            ">
+            Количество страниц не должно превышать 10000
+          </mat-error>
+          <mat-error *ngIf="myForm.controls['pages'].hasError('required')">
+            Это поле <strong>обязательное</strong>
+          </mat-error>
+        </mat-form-field>
+        <div class="buttonContainer">
+          <button mat-raised-button color="accent" [disabled]="myForm.invalid">
+            Добавить книгу
+          </button>
+        </div>
+      </form>
+    </mat-dialog-content>
+  </ng-template>
+
+  <ng-template #description>
+    <mat-dialog-content>
+      <div *ngIf="selectedBook">
+        <div *ngIf="editBook == 0" class="description">
+          <h2 style="text-align: center;">
+            {{ selectedBook.name | uppercase }}
+          </h2>
+          <div class="descriptionBook">
+            <div>
+              <div><span>автор: </span>{{ selectedBook.authorLastName }}</div>
+              <div><span>жанр: </span>{{ selectedBook.genre }}</div>
+              <div>
+                <span>кол-во страниц: </span>{{ selectedBook.numberOfPages }}
+              </div>
+            </div>
+          </div>
+          <div class="buttonsEnd">
+            <div class="buttonContainer">
+              <button mat-raised-button color="accent" (click)="editSelectedBook()">
+                Редактировать книгу
+              </button>
+            </div>
+            <div class="buttonContainer">
+              <button mat-raised-button color="warn" (click)="deleteBook()">
+                Удалить книгу
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="editBook">
+          <mat-form-field class="example-full-width">
+            <mat-label>Редактировать название:</mat-label>
+            <input matInput [(ngModel)]="selectedBook.name" placeholder="название" />
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Изменить автора:</mat-label>
+            <input matInput [(ngModel)]="selectedBook.authorLastName" placeholder="автор" />
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Редактировать жанр:</mat-label>
+            <input matInput [(ngModel)]="selectedBook.genre" placeholder="жанр" />
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Изменить кол-во страниц:</mat-label>
+            <input matInput [(ngModel)]="selectedBook.numberOfPages" placeholder="количество страниц" />
+          </mat-form-field>
+          <div class="buttonContainer">
+            <button mat-raised-button color="accent" (click)="saveEditedBook()">
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-dialog-content>
+  </ng-template>
+</div>

@@ -1,0 +1,78 @@
+<nav mat-tab-nav-bar color="primary">
+  <a mat-tab-link routerLink="/dashboard">
+    <mat-icon aria-hidden="false" aria-label="favorite">favorite</mat-icon>
+    Популярные книги
+  </a>
+  <a mat-tab-link routerLink="/books">
+    <mat-icon aria-hidden="false" aria-label="books">book</mat-icon> Все книги
+  </a>
+  <a mat-tab-link routerLink="/authors">
+    <mat-icon aria-hidden="false" aria-label="authors">how_to_reg</mat-icon> Все
+    авторы
+  </a>
+  <a mat-tab-link (click)="openDialog(addNewGenre)">
+    <mat-icon aria-hidden="false" aria-label="create genre">create</mat-icon>
+    Добавить жанр
+  </a>
+</nav>
+
+<ng-template #addNewGenre>
+  <mat-dialog-content>
+    <mat-form-field class="example-full-width">
+      <mat-label>Добавить жанр</mat-label>
+      <input matInput name="genreName" [(ngModel)]="genreName" placeholder="Название жанра" type="text"
+        (keyup.enter)="addGenre()" />
+    </mat-form-field>
+    <button mat-mini-fab color="accent" style="margin: 0px; float: right;">
+      <mat-icon (click)="addGenre()" aria-label="add">add</mat-icon>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <div *ngFor="let genre of genres; let i = index">
+      <span>{{ genre }}</span>
+      <button mat-icon-button color="warn">
+        <mat-icon (click)="delete(genre)" aria-hidden="false" aria-label="clear">clear</mat-icon>
+      </button>
+    </div>
+  </mat-dialog-content>
+</ng-template>
+
+<ng-template #intro>
+  <mat-dialog-content>
+    <p>Этот проект консолидировал мои основные навыки работы с Angular и Angular Material.</p>
+    <h3>Примеры технологий использованных в проекте: </h3>
+    <ul>
+      <li>
+        <mat-icon>done</mat-icon><span>Reactive forms с валидацией</span> (при добавлении новой книги и нового автора)
+      </li>
+      <li>
+        <mat-icon>done</mat-icon><span>NgModel</span> при редактировании автора и книги
+      </li>
+      <li>
+        <mat-icon>done</mat-icon>Использован<span> AppRoutingModule</span> для навигации
+      </li>
+      <li>
+        <mat-icon>done</mat-icon><span>Ng2SearchPipeModule </span>для поиска книг
+      </li>
+      <li>
+        <mat-icon>done</mat-icon>Доступна сортировка полей в таблицах с помощью <span>MatSortModule</span>
+      </li>
+      <li>
+        <mat-icon>done</mat-icon><span>Диалоговые окна (MatDialogModule)</span> для вывода форм добавления книг и
+        авторов
+      </li>
+      <li>
+        <mat-icon>done</mat-icon>Хранение данных (книги и авторы) в <span>LocalStorage</span>
+      </li>
+      <li>
+        <mat-icon>done</mat-icon>Дизайн адаптивный (<span>Media Queries, Flexbox layout</span>) на SCSS.
+      </li>
+      <li>
+        <mat-icon>done</mat-icon>Стили – <span>SCSS, Material Theming</span>
+      </li>
+    </ul>
+  </mat-dialog-content>
+</ng-template>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,135 @@
+<div class="container">
+<table matSort (matSortChange)="sortData($event)">
+    <thead>
+        <tr class="authors">
+            <th class="index">№</th>
+            <th mat-sort-header="lastName">Фамилия</th>
+            <th class="firstName" mat-sort-header="firstName">Имя</th>
+            <th class="patronymic" mat-sort-header="patronymic">Отчество</th>
+            <th class="dateOfBirth">
+                Дата рождения
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="authors" *ngFor="let author of authors; let i = index" [class.selected]="author === selectedAuthor"
+            (click)="onSelect(author)" (click)="openDialog(AuthorSelected)">
+            <td class="index">{{ i + 1 }}</td>
+            <td class="lastName">{{ author.lastName }}</td>
+            <td class="firstName">{{ author.firstName }}</td>
+            <td class="patronymic">{{ author.patronymic }}</td>
+            <td class="dateOfBirth">{{ author.dateOfBirth| date:'shortDate' }}</td>
+        </tr>
+
+    </tbody>
+</table>
+<mat-divider></mat-divider>
+<div class="buttonContainer">
+    <button mat-raised-button color="primary" (click)="openDialog(addNewAuthor)">
+        Добавить автора
+    </button>
+</div>
+<ng-template #addNewAuthor>
+    <mat-dialog-content>
+        <form [formGroup]="myForm" novalidate (ngSubmit)="submit()">
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Фамилия автора</mat-label>
+                <input matInput name="lastName" formControlName="lastName" placeholder="Фамилия автора" type="text" />
+                <mat-error *ngIf="myForm.controls['lastName'].hasError('required')">
+                    Введите, пожалуйста, фамилию автора
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Имя автора</mat-label>
+                <input matInput name="firstName" formControlName="firstName" placeholder="Имя автора" type="text" />
+                <mat-error *ngIf="myForm.controls['firstName'].hasError('required')">
+                    Введите, пожалуйста, имя автора
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Отчество автора</mat-label>
+                <input matInput name="patronymic" formControlName="patronymic" placeholder="Отчество автора"
+                    type="text" />
+                <mat-error *ngIf="myForm.controls['patronymic'].hasError('required')">
+                    Введите, пожалуйста, отчество автора
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label> Дата рождения</mat-label>
+                <input matInput name="dateOfBirth" formControlName="dateOfBirth" placeholder="Дата рождения автора"
+                    type="date" />
+                <mat-error *ngIf="myForm.controls['dateOfBirth'].hasError('required')">
+                    Введите, пожалуйста, дату рождения автора
+                </mat-error>
+            </mat-form-field>
+
+            <div class="buttonContainer">
+                <button mat-raised-button color="accent" [disabled]="myForm.invalid">
+                    Добавить автора
+                </button>
+            </div>
+        </form>
+    </mat-dialog-content>
+</ng-template>
+
+<ng-template #AuthorSelected>
+    <mat-dialog-content>
+        <div *ngIf="selectedAuthor">
+            <div *ngIf="editAuthor == 0" class="description">
+                <h2 style="text-align: center;">
+                    {{ selectedAuthor.lastName | uppercase }}
+                </h2>
+                <div class="descriptionBook">
+                    <div>
+                        <div><span>имя: </span>{{ selectedAuthor.firstName }}</div>
+                        <div><span>отчество: </span>{{ selectedAuthor.patronymic }}</div>
+                        <div>
+                            <span>дата рождения: </span>{{ selectedAuthor.dateOfBirth| date:'shortDate' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="buttonsEnd">
+                    <div class="buttonContainer">
+                        <button mat-raised-button color="accent" (click)="editSelectedAuthor()">
+                            Редактировать данные автора
+                        </button>
+                    </div>
+                    <div class="buttonContainer">
+                        <button mat-raised-button color="warn" (click)="deleteAuthor()">
+                            Удалить автора
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="editAuthor">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Редактировать фамилию:</mat-label>
+                    <input matInput [(ngModel)]="selectedAuthor.lastName" placeholder="фамилия" />
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Редактировать имя:</mat-label>
+                    <input matInput [(ngModel)]="selectedAuthor.firstName" placeholder="имя" />
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Редактировать отчество:</mat-label>
+                    <input matInput [(ngModel)]="selectedAuthor.patronymic" placeholder="отчество" />
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Редактировать дату рождения:</mat-label>
+                    <input matInput [(ngModel)]="selectedAuthor.dateOfBirth" placeholder="дата рождения" />
+                </mat-form-field>
+                <div class="buttonContainer">
+                    <button mat-raised-button color="accent" (click)="saveEditedAuthor()">
+                        Сохранить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+</ng-template>
+</div>
